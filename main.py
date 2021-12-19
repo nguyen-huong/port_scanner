@@ -27,7 +27,7 @@ def scanner(port):
 print ("Found in "+ str(time.time() - time_start) + " sec")
 
 if __name__ == "__main__":
-    for port in range(100):
+    for port in range(final_range):
         scanner(port)
 
 lock = threading.lock()
