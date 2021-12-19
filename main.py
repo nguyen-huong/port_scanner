@@ -1,3 +1,7 @@
+from multiprocessing import Process
+import os
+import threading
+from queue import Queue
 import socket
 import time
 
@@ -12,12 +16,74 @@ elif ans == "n":
 port_range = input("Run up to port #:")
 final_range = (int(port_range))+1
 
-for port in range (1, final_range):
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    result = sock.connect_ex((IP_address, port))
-    if result == 0:
-        print ("Port "+str(port)+" open")
-    else:
-        print("Port " + str(port) + " closed")
-    sock.close()
-print ("Found in "+ str(time.time() - time_start))
+# process = []
+# processNum = os.cpu_count()
+
+
+def scanner(port):
+    for port in range(1, final_range):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        result = sock.connect_ex((IP_address, port))
+        if result == 0:
+            print("Port " + str(port) + " open")
+        else:
+            print("Port " + str(port) + " closed")
+        sock.close()
+print ("Found in "+ str(time.time() - time_start) + " sec")
+
+if __name__ == "__main__":
+    for port in range(100):
+        scanner(port)
+
+lock = threading.lock()
+q = Queue()
+
+def threader():
+    while True:
+        port = q.get()
+        scanner(port)
+        q.task_done()
+
+def main():
+    for x in range(10):
+        thread = threading.Thread(target = threader)
+        thread.daemon = True
+        thread.start ()
+
+    for port in range(final_range):
+        q.put(port)
+    q.join()
+pass
+# for i in range(processNum):
+#     p = Process(target=scanner)
+#     process.append(p)
+#
+# for p in process:
+#     p.start()
+#
+# for p in process:
+#     p.join()
+
+
+# if __name__ == "__main__":
+#     for port in range(100):
+#         scanner(port)
+#
+# lock = threading.lock()
+# q = Queue()
+#
+# def threader():
+#     while True:
+#         port = q.get()
+#         scanner(port)
+#         q.task_done()
+#
+# def main():
+#     for x in range(100):
+#         thread = threading.Thread(target = threader)
+#         thread.daemon = True
+#         thread.start ()
+#
+#     for port in range(100):
+#         q.put(port)
+#     q.join()
