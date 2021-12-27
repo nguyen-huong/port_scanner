@@ -9,7 +9,3 @@
 ## Print time in sec
 <img width="1048" alt="Screen Shot 2021-12-18 at 6 00 33 PM" src="https://user-images.githubusercontent.com/57471582/146660953-288493a4-f399-41b6-a5c8-b21dc13632f0.png">
 
-
-
-Inspired by: https://github.com/herbertech/Python-Scripts and https://westoahu.hawaii.edu/cyber/forensics-weekly-executive-summmaries/writing-a-basic-port-scanner-in-python/
-
